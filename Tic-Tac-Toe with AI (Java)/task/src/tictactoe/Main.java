@@ -1,6 +1,8 @@
 package tictactoe;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Main {
@@ -10,11 +12,13 @@ public class Main {
     private static final int BOARD_LENGTH = BOARD_X_DIMENSION * BOARD_Y_DIMENSION;
 
     private static int[][][] gameboard = new int[BOARD_X_DIMENSION][BOARD_Y_DIMENSION][2];
+    private static Map<String, Character> map = new HashMap<>();
 
     public static void main(String[] args) {
         // Initialize or configure the board
         configBoard();
-        initializeGameState();
+        String initialState = initializeGameState();
+        createBoardMapping(initialState);
         printBoard();
     }
 
@@ -28,8 +32,8 @@ public class Main {
         }
     }
 
-    // Intialize starting game state via user input
-    public static void initializeGameState() {
+    // Initialize starting game state via user input
+    public static String initializeGameState() {
 
         Scanner scanner = new Scanner(System.in);
         String initialState;
@@ -39,9 +43,16 @@ public class Main {
         // checks if the string contains only valid chars and is exactly of length 9
         } while (!initialState.matches("[XO_]{9}"));
 
-        // TO DO: print out starting state of board. Maybe use a mapping from tuple -> symbol
-
         scanner.close();
+        return initialState;
+    }
+
+    public static void createBoardMapping(String initialState) {
+        for (int i = 0; i < BOARD_X_DIMENSION; i++) {
+            for (int j = 0; j < BOARD_Y_DIMENSION; j++) {
+                map.put(Arrays.toString(gameboard[i][j]), initialState.toCharArray()[i * BOARD_Y_DIMENSION + j]);
+            }
+        }
     }
 
     // Method to print the board
@@ -50,7 +61,8 @@ public class Main {
         for (int i = 0; i < BOARD_X_DIMENSION; i++) {
             System.out.print("| "); // Print board's left edge
             for (int j = 0; j < BOARD_Y_DIMENSION; j++) {
-                System.out.print(Arrays.toString(gameboard[i][j]) + " ");
+                char mapValue = map.get(Arrays.toString(gameboard[i][j]));
+                System.out.print(mapValue + " ");
             }
             System.out.println("|"); // Print board's right edge and move to next line
         }
