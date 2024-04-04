@@ -12,7 +12,7 @@ public class Main {
     private static final int BOARD_LENGTH = BOARD_X_DIMENSION * BOARD_Y_DIMENSION;
 
     private static int[][][] gameboard = new int[BOARD_X_DIMENSION][BOARD_Y_DIMENSION][2];
-    private static Map<String, Character> map = new HashMap<>();
+    private static Map<String, Character> moveMapping = new HashMap<>();
 
     public static void main(String[] args) {
         // Initialize or configure the board
@@ -20,6 +20,9 @@ public class Main {
         String initialState = initializeGameState();
         createBoardMapping(initialState);
         printBoard();
+
+        boolean isGameOver = checkWinCondition();
+        System.out.println(isGameOver);
     }
 
     // Configure the gameboard
@@ -50,7 +53,7 @@ public class Main {
     public static void createBoardMapping(String initialState) {
         for (int i = 0; i < BOARD_X_DIMENSION; i++) {
             for (int j = 0; j < BOARD_Y_DIMENSION; j++) {
-                map.put(Arrays.toString(gameboard[i][j]), initialState.toCharArray()[i * BOARD_Y_DIMENSION + j]);
+                moveMapping.put(Arrays.toString(gameboard[i][j]), initialState.toCharArray()[i * BOARD_Y_DIMENSION + j]);
             }
         }
     }
@@ -61,11 +64,40 @@ public class Main {
         for (int i = 0; i < BOARD_X_DIMENSION; i++) {
             System.out.print("| "); // Print board's left edge
             for (int j = 0; j < BOARD_Y_DIMENSION; j++) {
-                char mapValue = map.get(Arrays.toString(gameboard[i][j]));
+                char mapValue = moveMapping.get(Arrays.toString(gameboard[i][j]));
                 System.out.print(mapValue + " ");
             }
             System.out.println("|"); // Print board's right edge and move to next line
         }
         System.out.print("---------\n");    //Print bottom border
+    }
+
+    public static boolean checkWinCondition() {
+        // Convert coordinates to string keys and check horizontal conditions
+        boolean winHorizontalCondition1 = moveMapping.get(Arrays.toString(gameboard[0][0])).equals(moveMapping.get(Arrays.toString(gameboard[0][1]))) &&
+                moveMapping.get(Arrays.toString(gameboard[0][0])).equals(moveMapping.get(Arrays.toString(gameboard[0][2])));
+        boolean winHorizontalCondition2 = moveMapping.get(Arrays.toString(gameboard[1][0])).equals(moveMapping.get(Arrays.toString(gameboard[1][1]))) &&
+                moveMapping.get(Arrays.toString(gameboard[1][0])).equals(moveMapping.get(Arrays.toString(gameboard[1][2])));
+        boolean winHorizontalCondition3 = moveMapping.get(Arrays.toString(gameboard[2][0])).equals(moveMapping.get(Arrays.toString(gameboard[2][1]))) &&
+                moveMapping.get(Arrays.toString(gameboard[2][0])).equals(moveMapping.get(Arrays.toString(gameboard[2][2])));
+
+        // Check vertical conditions
+        boolean winVerticalCondition1 = moveMapping.get(Arrays.toString(gameboard[0][0])).equals(moveMapping.get(Arrays.toString(gameboard[1][0]))) &&
+                moveMapping.get(Arrays.toString(gameboard[0][0])).equals(moveMapping.get(Arrays.toString(gameboard[2][0])));
+        boolean winVerticalCondition2 = moveMapping.get(Arrays.toString(gameboard[0][1])).equals(moveMapping.get(Arrays.toString(gameboard[1][1]))) &&
+                moveMapping.get(Arrays.toString(gameboard[0][1])).equals(moveMapping.get(Arrays.toString(gameboard[2][1])));
+        boolean winVerticalCondition3 = moveMapping.get(Arrays.toString(gameboard[0][2])).equals(moveMapping.get(Arrays.toString(gameboard[1][2]))) &&
+                moveMapping.get(Arrays.toString(gameboard[0][2])).equals(moveMapping.get(Arrays.toString(gameboard[2][2])));
+
+        // Check diagonal conditions
+        boolean winDiagonalCondition1 = moveMapping.get(Arrays.toString(gameboard[0][0])).equals(moveMapping.get(Arrays.toString(gameboard[1][1]))) &&
+                moveMapping.get(Arrays.toString(gameboard[0][0])).equals(moveMapping.get(Arrays.toString(gameboard[2][2])));
+        boolean winDiagonalCondition2 = moveMapping.get(Arrays.toString(gameboard[0][2])).equals(moveMapping.get(Arrays.toString(gameboard[1][1]))) &&
+                moveMapping.get(Arrays.toString(gameboard[0][2])).equals(moveMapping.get(Arrays.toString(gameboard[2][0])));
+
+        // Check if any win condition is met
+        return winHorizontalCondition1 || winHorizontalCondition2 || winHorizontalCondition3 ||
+                winVerticalCondition1 || winVerticalCondition2 || winVerticalCondition3 ||
+                winDiagonalCondition1 || winDiagonalCondition2;
     }
 }
