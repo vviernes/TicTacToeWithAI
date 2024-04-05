@@ -21,6 +21,8 @@ public class Main {
         createBoardMapping(initialState);
         printBoard();
 
+        getMove();
+
         boolean isGameOver = checkWinCondition();
         System.out.println(isGameOver);
     }
@@ -71,6 +73,48 @@ public class Main {
         }
         System.out.print("---------\n");    //Print bottom border
     }
+
+    public static void getMove() {
+        System.out.println("Enter the coordinates:");
+        Scanner scanner = new Scanner(System.in);
+        String userPlacementLine = scanner.nextLine();
+        String[] coordinates = userPlacementLine.split(" ");
+
+        int moveXCoordinate = 0;
+        int moveYCoordinate = 0;
+        boolean validInput = false;
+        boolean validRange = false;
+
+        while (!validInput) {
+            try {
+                moveXCoordinate = Integer.parseInt(coordinates[0]); // Parse the first part as X
+                moveYCoordinate = Integer.parseInt(coordinates[1]); // Parse the second part as Y
+                validInput = true; // Parsed successfully, break the loop
+            } catch (NumberFormatException e) {
+                // If parsing fails, it will throw NumberFormatException
+                System.out.println("You should enter numbers!");
+                System.out.println("Enter the coordinates:");
+                userPlacementLine = scanner.nextLine();
+                coordinates = userPlacementLine.split(" ");
+            }
+        }
+
+        while (!validRange) {
+            if (moveXCoordinate < 1 || moveXCoordinate > 3 || moveYCoordinate < 1 || moveYCoordinate > 3) {
+                System.out.println("Coordinates should be from 1 to 3!");
+                System.out.println("Enter the coordinates:");
+                userPlacementLine = scanner.nextLine();
+                coordinates = userPlacementLine.split(" ");
+                moveXCoordinate = Integer.parseInt(coordinates[0]);
+                moveYCoordinate = Integer.parseInt(coordinates[1]);
+            } else
+                validRange = true;
+        }
+
+        String movePlacement = moveXCoordinate + "," + moveYCoordinate;
+        moveMapping.put(movePlacement, '&');
+    }
+
 
     public static boolean checkWinCondition() {
         // Convert coordinates to string keys and check horizontal conditions
