@@ -115,31 +115,35 @@ public class Main {
 
 
     public static boolean checkWinCondition() {
-        // Convert coordinates to string keys and check horizontal conditions
-        boolean winHorizontalCondition1 = moveMapping.get(Arrays.toString(gameboard[0][0])).equals(moveMapping.get(Arrays.toString(gameboard[0][1]))) &&
-                moveMapping.get(Arrays.toString(gameboard[0][0])).equals(moveMapping.get(Arrays.toString(gameboard[0][2])));
-        boolean winHorizontalCondition2 = moveMapping.get(Arrays.toString(gameboard[1][0])).equals(moveMapping.get(Arrays.toString(gameboard[1][1]))) &&
-                moveMapping.get(Arrays.toString(gameboard[1][0])).equals(moveMapping.get(Arrays.toString(gameboard[1][2])));
-        boolean winHorizontalCondition3 = moveMapping.get(Arrays.toString(gameboard[2][0])).equals(moveMapping.get(Arrays.toString(gameboard[2][1]))) &&
-                moveMapping.get(Arrays.toString(gameboard[2][0])).equals(moveMapping.get(Arrays.toString(gameboard[2][2])));
+        // Get the characters from the gameboard for clarity
+        char char00 = moveMapping.get(Arrays.toString(gameboard[0][0]));
+        char char01 = moveMapping.get(Arrays.toString(gameboard[0][1]));
+        char char02 = moveMapping.get(Arrays.toString(gameboard[0][2]));
+        char char10 = moveMapping.get(Arrays.toString(gameboard[1][0]));
+        char char11 = moveMapping.get(Arrays.toString(gameboard[1][1]));
+        char char12 = moveMapping.get(Arrays.toString(gameboard[1][2]));
+        char char20 = moveMapping.get(Arrays.toString(gameboard[2][0]));
+        char char21 = moveMapping.get(Arrays.toString(gameboard[2][1]));
+        char char22 = moveMapping.get(Arrays.toString(gameboard[2][2]));
+
+        // Check horizontal conditions
+        boolean winHorizontalCondition1 = (char00 == char01) && (char00 == char02) && char00 != '_';
+        boolean winHorizontalCondition2 = (char10 == char11) && (char10 == char12) && char10 != '_';
+        boolean winHorizontalCondition3 = (char20 == char21) && (char20 == char22) && char20 != '_';
 
         // Check vertical conditions
-        boolean winVerticalCondition1 = moveMapping.get(Arrays.toString(gameboard[0][0])).equals(moveMapping.get(Arrays.toString(gameboard[1][0]))) &&
-                moveMapping.get(Arrays.toString(gameboard[0][0])).equals(moveMapping.get(Arrays.toString(gameboard[2][0])));
-        boolean winVerticalCondition2 = moveMapping.get(Arrays.toString(gameboard[0][1])).equals(moveMapping.get(Arrays.toString(gameboard[1][1]))) &&
-                moveMapping.get(Arrays.toString(gameboard[0][1])).equals(moveMapping.get(Arrays.toString(gameboard[2][1])));
-        boolean winVerticalCondition3 = moveMapping.get(Arrays.toString(gameboard[0][2])).equals(moveMapping.get(Arrays.toString(gameboard[1][2]))) &&
-                moveMapping.get(Arrays.toString(gameboard[0][2])).equals(moveMapping.get(Arrays.toString(gameboard[2][2])));
+        boolean winVerticalCondition1 = (char00 == char10) && (char00 == char20) && char00 != '_';
+        boolean winVerticalCondition2 = (char01 == char11) && (char01 == char21) && char01 != '_';
+        boolean winVerticalCondition3 = (char02 == char12) && (char02 == char22) && char02 != '_';
 
         // Check diagonal conditions
-        boolean winDiagonalCondition1 = moveMapping.get(Arrays.toString(gameboard[0][0])).equals(moveMapping.get(Arrays.toString(gameboard[1][1]))) &&
-                moveMapping.get(Arrays.toString(gameboard[0][0])).equals(moveMapping.get(Arrays.toString(gameboard[2][2])));
-        boolean winDiagonalCondition2 = moveMapping.get(Arrays.toString(gameboard[0][2])).equals(moveMapping.get(Arrays.toString(gameboard[1][1]))) &&
-                moveMapping.get(Arrays.toString(gameboard[0][2])).equals(moveMapping.get(Arrays.toString(gameboard[2][0])));
+        boolean winDiagonalCondition1 = (char00 == char11) && (char00 == char22) && char00 != '_';
+        boolean winDiagonalCondition2 = (char02 == char11) && (char02 == char20) && char02 != '_';
 
         // Check if any win condition is met
         return winHorizontalCondition1 || winHorizontalCondition2 || winHorizontalCondition3 ||
                 winVerticalCondition1 || winVerticalCondition2 || winVerticalCondition3 ||
                 winDiagonalCondition1 || winDiagonalCondition2;
     }
+
 }
