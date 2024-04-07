@@ -10,6 +10,7 @@ public class Main {
     private static final int BOARD_X_DIMENSION = 3;
     private static final int BOARD_Y_DIMENSION = 3;
     private static final int BOARD_LENGTH = BOARD_X_DIMENSION * BOARD_Y_DIMENSION;
+    private final static Scanner scanner = new Scanner(System.in);
 
     private static int[][][] gameboard = new int[BOARD_X_DIMENSION][BOARD_Y_DIMENSION][2];
     private static Map<String, Character> moveMapping = new HashMap<>();
@@ -22,9 +23,11 @@ public class Main {
         printBoard();
 
         getMove();
+        printBoard();
 
         boolean isGameOver = checkWinCondition();
         System.out.println(isGameOver);
+        scanner.close();
     }
 
     // Configure the gameboard
@@ -40,7 +43,6 @@ public class Main {
     // Initialize starting game state via user input
     public static String initializeGameState() {
 
-        Scanner scanner = new Scanner(System.in);
         String initialState;
         do {
             System.out.println("Enter the cells");
@@ -48,7 +50,6 @@ public class Main {
         // checks if the string contains only valid chars and is exactly of length 9
         } while (!initialState.matches("[XO_]{9}"));
 
-        scanner.close();
         return initialState;
     }
 
@@ -76,7 +77,6 @@ public class Main {
 
     public static void getMove() {
         System.out.println("Enter the coordinates:");
-        Scanner scanner = new Scanner(System.in);
         String userPlacementLine = scanner.nextLine();
         String[] coordinates = userPlacementLine.split(" ");
 
@@ -110,9 +110,7 @@ public class Main {
             } else
                 validRange = true;
         }
-
-        String movePlacement = moveXCoordinate + "," + moveYCoordinate;
-        moveMapping.put(movePlacement, '&');
+        moveMapping.put(Arrays.toString(gameboard[moveXCoordinate - 1][moveYCoordinate - 1]), '&');
     }
 
 
