@@ -26,6 +26,11 @@ public class Main {
         printBoard();
 
         boolean isGameOver = checkWinCondition();
+        while (!isGameOver) {
+            getMove();
+            printBoard();
+            isGameOver = checkWinCondition();
+        }
         System.out.println(isGameOver);
         scanner.close();
     }
