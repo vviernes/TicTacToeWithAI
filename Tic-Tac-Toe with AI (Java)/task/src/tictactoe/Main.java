@@ -9,7 +9,6 @@ public class Main {
     // GLOBAL CONSTANTS
     private static final int BOARD_X_DIMENSION = 3;
     private static final int BOARD_Y_DIMENSION = 3;
-    private static final int BOARD_LENGTH = BOARD_X_DIMENSION * BOARD_Y_DIMENSION;
     private final static Scanner scanner = new Scanner(System.in);
 
     private static int[][][] gameboard = new int[BOARD_X_DIMENSION][BOARD_Y_DIMENSION][2];
@@ -22,16 +21,21 @@ public class Main {
         createBoardMapping(initialState);
         printBoard();
 
-        getMove();
-        printBoard();
+//        getMove();
+//        printBoard();
 
-        boolean isGameOver = checkWinCondition();
-        while (!isGameOver) {
+        char isGameOver = checkWinCondition();
+        while (isGameOver == '_') {
             getMove();
             printBoard();
             isGameOver = checkWinCondition();
         }
-        System.out.println(isGameOver);
+
+        if (isGameOver == 'X'){
+            System.out.println("X wins");
+        } else if (isGameOver == 'O'){
+            System.out.println("O wins");
+        }
         scanner.close();
     }
 
@@ -119,7 +123,7 @@ public class Main {
     }
 
 
-    public static boolean checkWinCondition() {
+    public static char checkWinCondition() {
         // Get the characters from the gameboard for clarity
         char char00 = moveMapping.get(Arrays.toString(gameboard[0][0]));
         char char01 = moveMapping.get(Arrays.toString(gameboard[0][1]));
@@ -145,10 +149,25 @@ public class Main {
         boolean winDiagonalCondition1 = (char00 == char11) && (char00 == char22) && char00 != '_';
         boolean winDiagonalCondition2 = (char02 == char11) && (char02 == char20) && char02 != '_';
 
-        // Check if any win condition is met
-        return winHorizontalCondition1 || winHorizontalCondition2 || winHorizontalCondition3 ||
-                winVerticalCondition1 || winVerticalCondition2 || winVerticalCondition3 ||
-                winDiagonalCondition1 || winDiagonalCondition2;
+        // Returns the character associated with the winning move, assuming there is it; else, return space
+        if (winHorizontalCondition1){
+            return char00;
+        } else if (winHorizontalCondition2) {
+            return char10;
+        } else if (winHorizontalCondition3) {
+            return char20;
+        } else if (winVerticalCondition1) {
+            return char00;
+        } else if (winVerticalCondition2) {
+            return char01;
+        } else if (winVerticalCondition3) {
+            return char02;
+        } else if (winDiagonalCondition1 || winDiagonalCondition2) {
+            return char11;
+        } else {
+            return '_';
+        }
+
     }
 
 }
